@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+
+  flink-jobmanager:
+    image: stratospire/flink-cluster:1.2.0
+    environment:
+      - "FLINK_JM_ADDR=flink-jobmanager"
+    ports:
+        - "8080:8080"
+    command: start-jobmanager.sh
+
+  flink-taskmanager:
+    image: stratospire/flink-cluster:1.2.0
+    mem_limit: 4096m
+    environment:
+      - "FLINK_JM_ADDR=flink-jobmanager"
+      - "FLINK_TM_HEAP=4096"
+    depends_on:
+      - flink-jobmanager
+    command: start-taskmanager.sh
